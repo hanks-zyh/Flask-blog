@@ -8,10 +8,10 @@ from flask.ext.login import login_user, logout_user, login_required
 
 from . import auth
 from ..models import User
-from ..main.forms import LoginForm
+from .forms import LoginForm
 
 
-@auth.route('/login')
+@auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
