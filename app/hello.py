@@ -40,6 +40,7 @@ app.config['FLASKY_MAIL_SUBJECT_PREFIX'] = '[Flasky]'
 app.config['FLASKY_MAIL_SENDER'] = 'Flasky Admin <zhangyuhan3030@163.com>'
 
 mail = Mail(app)
+
 manager = Manager(app)
 bootstrap = Bootstrap(app)
 moment = Moment(app)
