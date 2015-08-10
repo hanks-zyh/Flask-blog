@@ -33,3 +33,11 @@ class RegistrationForm(Form):
     def validate_username(self, field):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('用户名已被占用')
+
+
+class ChangePasswordForm(Form):
+    old_password = PasswordField('旧密码', validators=[Required()])
+    password = PasswordField('新密码', validators=[Required(), EqualTo('password2', message='两次密码不一致')])
+    password2 = PasswordField('再次输入新密码', validators=[Required()])
+    submit = SubmitField('完成')
+

@@ -9,7 +9,7 @@ from flask.ext.login import current_user
 from . import auth
 from ..models import User
 from ..email import send_email
-from .forms import LoginForm, RegistrationForm
+from .forms import LoginForm, RegistrationForm, ChangePasswordForm
 from .. import db
 
 
@@ -87,3 +87,19 @@ def resend_confiremation():
     send_email(current_user.email, 'Confirm Your Account', 'auth/email/confirm', user=current_user, token=token)
     flash('新的验证邮件已经发送!')
     return redirect(url_for('main.index'))
+
+
+# 修改密码
+@auth.route('/change-password', methods=['GET', 'POST'])
+@login_required
+def change_password():
+    form = ChangePasswordForm()
+    if form.validate_on_submit():
+        if current_user.verify_password(form.old_password.data):
+            current_user.password = form.password.data
+            db.session.add(current_user)
+            flash('密码已更改')
+            return redirect(url_for('main.index'))
+        else:
+            flash('密码不正确')
+    return render_template('auth/change_password.html', form=form)
