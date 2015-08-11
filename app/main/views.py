@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
+from os import abort
 
 __author__ = 'Hanks'
 
 from datetime import datetime
-from flask import render_template, session, redirect, url_for,current_app
+from flask import render_template, session, redirect, url_for, current_app
 
 from . import main
 from .forms import NameForm
@@ -33,3 +34,11 @@ def index():
                            form=form,
                            name=session.get('name'),
                            known=session.get('known', False))
+
+
+@main.route('/user/<username>')
+def user(username):
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        abort(404)
+    return render_template('user.html', user=user)

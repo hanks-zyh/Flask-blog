@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-
+from datetime import datetime
 
 __author__ = 'Hanks'
 
@@ -80,6 +80,11 @@ class User(db.Model, UserMixin):
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
     confirmed = db.Column(db.Boolean, default=False)
+    name = db.Column(db.String(64))  # 真实名字
+    location = db.Column(db.String(64))  # 所在地
+    about_me = db.Column(db.Text)  # 自我介绍
+    member_since = db.Column(db.DateTime(), default=datetime.utcnow)  # 注册日期
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)  # 最后访问日期
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -88,6 +93,10 @@ class User(db.Model, UserMixin):
                 self.role = Role.query.filter_by(permissions=0xff).first()
             if self.role is None:
                 self.role = Role.query.filter_by(default_user=True).first()
+
+    def ping(self):
+        self.last_seen = datetime.utcnow()
+        db.session.add(self)
 
     def can(self, permissions):
         return self.role is not None and (self.role.permissions & permissions) == permissions

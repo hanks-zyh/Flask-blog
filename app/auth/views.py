@@ -71,18 +71,17 @@ def before_request():
             and request.endpoint != 'static':
         return redirect(url_for('auth.unconfirmed'))
 
-
 @auth.route('/unconfirmed')
 def unconfirmed():
     if current_user.is_anonymous() or current_user.confirmed:
         return redirect(url_for('main.index'))
-    return redirect('anth/unfiremed.html')
+    return render_template('auth/unconfirmed.html')
 
 
 # 重新发送验证邮件
-@auth.route('/confirm')
+@auth.route('/resend_confirmation')
 @login_required
-def resend_confiremation():
+def resend_confirmation():
     token = current_user.generate_confirmation_token()
     send_email(current_user.email, 'Confirm Your Account', 'auth/email/confirm', user=current_user, token=token)
     flash('新的验证邮件已经发送!')
