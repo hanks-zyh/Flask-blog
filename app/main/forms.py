@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-
+from flask.ext.pagedown.fields import PageDownField
 
 __author__ = 'Hanks'
 
@@ -15,5 +15,5 @@ class NameForm(Form):
 
 
 class PostForm(Form):
-    body = TextAreaField('what is on your mind?', validators=[Required()])
+    body = PageDownField('what is on your mind?', validators=[Required()])
     submit = SubmitField('Submit')
