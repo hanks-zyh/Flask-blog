@@ -30,6 +30,7 @@ class DevelopmentConfig(Config):
     FLASKY_MAIL_SENDER = '1143123897@qq.com'
     FLASKY_POSTS_PER_PAGE = 20
     FLASKY_FOLLOWERS_PER_PAGE = 20
+    FLASKY_COMMENTS_PRE_PAGE = 20
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
                               'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
