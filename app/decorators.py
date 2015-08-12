@@ -9,7 +9,7 @@ from flask import abort
 from flask.ext.login import current_user
 
 
-def permission_require(permission):
+def permission_required(permission):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
@@ -22,5 +22,5 @@ def permission_require(permission):
     return decorator
 
 
-def admin_require(f):
-    return permission_require(Permission.ADMINISTER)(f)
+def admin_required(f):
+    return permission_required(Permission.ADMINISTER)(f)
