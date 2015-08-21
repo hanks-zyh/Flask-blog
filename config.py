@@ -32,7 +32,8 @@ class DevelopmentConfig(Config):
     FLASKY_FOLLOWERS_PER_PAGE = 20
     FLASKY_COMMENTS_PRE_PAGE = 20
     SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or \
-                              'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
+                              'mysql://root:root@127.0.0.1:3306/data-dev.db'
+                              #'sqlite:///' + os.path.join(basedir, 'data-dev.sqlite')
 
 
 class TestingConfig(Config):
@@ -43,7 +44,31 @@ class TestingConfig(Config):
 
 class ProductionConfig(Config):
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-                              'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+                                'mysql://root:root@127.0.0.1:3306/data-dev.db'
+                              # 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+
+    @classmethod
+    def init_app(cls, app):
+        Config.init_app(app)
+
+        # 把错误通过电子邮件发送给管理员
+        import logging
+        from logging.handlers import SMTPHandler
+        credentials = None
+        secure = None
+        if getattr(cls, 'MAIL_USERNAME', None) is not None:
+            credentials = (cls.MAIL_USERNAME, None)
+            secure()
+        main_handler = SMTPHandler(
+            mailhost=(cls.MAIL_SERVER, cls.MAIL_PORT),
+            fromaddr=cls.FLASKY_MAIL_SENDER,
+            toaddrs=[cls.FLASKY_ADMIN],
+            subject=cls.FLASKY_MAIL_SUBJECT_PREFIX + 'Application Error',
+            credentials=credentials,
+            secure=secure
+        )
+        main_handler.setLevel(logging.ERROR)
+        app.logger.addHandler(main_handler)
 
 
 config = {

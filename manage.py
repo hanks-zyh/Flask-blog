@@ -50,5 +50,18 @@ def test(coverage=False):
         COV.erase()
 
 
+@manager.command
+def deploy():
+    """ Run deploy tasks."""
+    from flask.ext.migrate import upgrade
+    from  app.models import Role, User
+    # 把数据库迁移
+    upgrade
+    # 创建用户角色
+    Role.insert_roles()
+    # 让所有用户关注自己
+    User.add_self_follows()
+
+
 if __name__ == '__main__':
     manager.run()

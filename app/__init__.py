@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-from flask.ext.pagedown import PageDown
 
 __author__ = 'Hanks'
 
 from flask import Flask
+from flask.ext.pagedown import PageDown
 from flask.ext.bootstrap import Bootstrap
 from flask.ext.moment import Moment
 from flask.ext.sqlalchemy import SQLAlchemy
